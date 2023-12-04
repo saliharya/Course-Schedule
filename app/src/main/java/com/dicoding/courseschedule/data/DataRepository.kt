@@ -3,37 +3,48 @@ package com.dicoding.courseschedule.data
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.dicoding.courseschedule.util.QueryType
-import com.dicoding.courseschedule.util.QueryUtil.nearestQuery
+import com.dicoding.courseschedule.util.QueryUtil
 import com.dicoding.courseschedule.util.SortType
 import com.dicoding.courseschedule.util.executeThread
+import java.util.Calendar
 
 //TODO 4 : Implement repository with appropriate dao
 class DataRepository(private val dao: CourseDao) {
 
-    fun getNearestSchedule(queryType: QueryType) : LiveData<Course?> {
-        throw NotImplementedError("needs implementation")
+    fun getNearestSchedule(queryType: QueryType): LiveData<Course?> {
+        return when (queryType) {
+            QueryType.CURRENT_DAY -> dao.getNearestSchedule(QueryUtil.nearestQuery(QueryType.CURRENT_DAY))
+            QueryType.NEXT_DAY -> dao.getNearestSchedule(QueryUtil.nearestQuery(QueryType.NEXT_DAY))
+            QueryType.PAST_DAY -> dao.getNearestSchedule(QueryUtil.nearestQuery(QueryType.PAST_DAY))
+        }
     }
 
     fun getAllCourse(sortType: SortType): LiveData<PagedList<Course>> {
-        throw NotImplementedError("needs implementation")
+        val query = QueryUtil.sortedQuery(sortType)
+        val config =
+            PagedList.Config.Builder().setPageSize(PAGE_SIZE).setEnablePlaceholders(false).build()
+
+        return LivePagedListBuilder(dao.getAll(query), config).build()
     }
 
-    fun getCourse(id: Int) : LiveData<Course> {
-        throw NotImplementedError("needs implementation")
+    fun getCourse(id: Int): LiveData<Course> {
+        return dao.getCourse(id)
     }
 
-    fun getTodaySchedule() : List<Course> {
-        throw NotImplementedError("needs implementation")
+    fun getTodaySchedule(): LiveData<List<Course>> {
+        val today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+        return MutableLiveData(dao.getTodaySchedule(today))
     }
 
     fun insert(course: Course) = executeThread {
-
+        dao.insert(course)
     }
 
     fun delete(course: Course) = executeThread {
-
+        dao.delete(course)
     }
 
     companion object {
