@@ -7,7 +7,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.courseschedule.R
 import com.dicoding.courseschedule.data.Course
@@ -35,9 +34,9 @@ class HomeActivity : AppCompatActivity() {
             this, HomeViewModelFactory(DataRepository.getInstance(this))
         )[HomeViewModel::class.java]
         viewModel.fetchNearestSchedule()
-        viewModel.nearestSchedule.observe(this, Observer { course ->
+        viewModel.nearestSchedule.observe(this) { course ->
             showNearestSchedule(course)
-        })
+        }
     }
 
     private fun showNearestSchedule(course: Course?) {
@@ -55,9 +54,14 @@ class HomeActivity : AppCompatActivity() {
             cardHome.setNote(note)
         }
 
-        findViewById<TextView>(R.id.tv_empty_home).visibility =
-            if (course == null) View.VISIBLE else View.GONE
+        val emptyTextView = findViewById<TextView>(R.id.tv_empty_home)
+        if (course == null) {
+            emptyTextView.visibility = View.VISIBLE
+        } else {
+            emptyTextView.visibility = View.GONE
+        }
     }
+
 
 
     private fun checkQueryType(course: Course?) {

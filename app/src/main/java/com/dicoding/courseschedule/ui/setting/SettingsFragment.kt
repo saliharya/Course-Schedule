@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreference
 import com.dicoding.courseschedule.R
+import com.dicoding.courseschedule.notification.DailyReminder
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
@@ -17,6 +19,19 @@ class SettingsFragment : PreferenceFragmentCompat() {
         themePreference?.setOnPreferenceChangeListener { preference, newValue ->
             val themeValue = (newValue as String).toInt()
             updateTheme(themeValue)
+            true
+        }
+
+        val notificationSwitchPreference = findPreference<SwitchPreference>("notification_key")
+        notificationSwitchPreference?.setOnPreferenceChangeListener { preference, newValue ->
+            val isEnabled = newValue as Boolean
+            val dailyReminder = DailyReminder()
+
+            if (isEnabled) {
+                dailyReminder.setDailyReminder(requireContext())
+            } else {
+                dailyReminder.cancelAlarm(requireContext())
+            }
             true
         }
     }

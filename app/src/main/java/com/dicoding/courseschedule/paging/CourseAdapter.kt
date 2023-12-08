@@ -4,6 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.ItemTouchHelper.Callback.makeMovementFlags
+import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.courseschedule.R
 import com.dicoding.courseschedule.data.Course
 
@@ -16,6 +19,7 @@ class CourseAdapter(private val clickListener: (Course) -> Unit) :
         val view = inflater.inflate(R.layout.item_course, parent, false)
         return CourseViewHolder(view)
     }
+
 
     override fun onBindViewHolder(holder: CourseViewHolder, position: Int) {
         val courseItem = getItem(position)

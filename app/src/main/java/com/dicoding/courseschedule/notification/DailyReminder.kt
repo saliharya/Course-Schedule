@@ -22,10 +22,14 @@ class DailyReminder : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         executeThread {
             val repository = DataRepository.getInstance(context)
-            val courses = repository?.getTodaySchedule()
+            val coursesLiveData = repository?.getTodaySchedule()
 
-            courses?.let {
-//                if (it.isNotEmpty()) showNotification(context, it)
+            coursesLiveData?.observeForever { courses ->
+                courses?.let {
+                    if (it.isNotEmpty()) {
+                        showNotification(context, it)
+                    }
+                }
             }
         }
     }
@@ -44,7 +48,7 @@ class DailyReminder : BroadcastReceiver() {
             set(Calendar.SECOND, 0)
         }
 
-        alarmManager.setRepeating(
+        alarmManager.setInexactRepeating(
             AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, alarmIntent
         )
     }

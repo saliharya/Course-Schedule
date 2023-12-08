@@ -15,7 +15,7 @@ class CourseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     //TODO 7 : Complete ViewHolder to show item
     private val courseNameTextView: TextView? = view.findViewById(R.id.tv_course)
     private val timeTextView: TextView? = view.findViewById(R.id.tv_time)
-
+    private val lecturerTextView: TextView? = view.findViewById(R.id.tv_lecturer)
 
     fun bind(course: Course, clickListener: (Course) -> Unit) {
         this.course = course
@@ -26,6 +26,7 @@ class CourseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
             courseNameTextView?.text = courseName
             timeTextView?.text = timeFormat
+            lecturerTextView?.text = lecturer
         }
 
         itemView.setOnClickListener {
