@@ -17,7 +17,7 @@ class DailyReminder : BroadcastReceiver() {
             val courses = repository?.getTodaySchedule()
 
             courses?.let {
-                if (it.isNotEmpty()) showNotification(context, it)
+//                if (it.isNotEmpty()) showNotification(context, it)
             }
         }
     }

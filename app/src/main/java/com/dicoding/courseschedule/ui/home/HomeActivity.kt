@@ -7,9 +7,11 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.courseschedule.R
 import com.dicoding.courseschedule.data.Course
+import com.dicoding.courseschedule.data.DataRepository
 import com.dicoding.courseschedule.ui.setting.SettingsActivity
 import com.dicoding.courseschedule.util.DayName
 import com.dicoding.courseschedule.util.QueryType
@@ -27,10 +29,13 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
         supportActionBar?.title = resources.getString(R.string.today_schedule)
 
-        viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
-        viewModel.getNearestSchedule(queryType).observe(this) { course ->
+        viewModel = ViewModelProvider(
+            this, HomeViewModelFactory(DataRepository.getInstance(this))
+        )[HomeViewModel::class.java]
+        viewModel.fetchNearestSchedule()
+        viewModel.nearestSchedule.observe(this, Observer { course ->
             showNearestSchedule(course)
-        }
+        })
     }
 
     private fun showNearestSchedule(course: Course?) {
