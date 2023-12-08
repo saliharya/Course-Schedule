@@ -1,13 +1,28 @@
 package com.dicoding.courseschedule.paging
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import com.dicoding.courseschedule.R
 import com.dicoding.courseschedule.data.Course
 
 //TODO 6 : Implement Method for PagedListAdapter
 class CourseAdapter(private val clickListener: (Course) -> Unit) :
     PagedListAdapter<Course, CourseViewHolder>(DIFF_CALLBACK) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val view = inflater.inflate(R.layout.item_course, parent, false)
+        return CourseViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: CourseViewHolder, position: Int) {
+        val courseItem = getItem(position)
+        courseItem?.let { course ->
+            holder.bind(course, clickListener)
+        }
+    }
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Course>() {
@@ -19,13 +34,5 @@ class CourseAdapter(private val clickListener: (Course) -> Unit) :
                 return oldItem == newItem
             }
         }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseViewHolder {
-        throw NotImplementedError()
-    }
-
-    override fun onBindViewHolder(holder: CourseViewHolder, position: Int) {
-
     }
 }
