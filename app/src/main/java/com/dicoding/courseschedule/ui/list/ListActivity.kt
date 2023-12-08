@@ -37,7 +37,7 @@ class ListActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val factory = ListViewModelFactory.createFactory(this)
-        viewModel = ViewModelProvider(this, factory).get(ListViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory)[ListViewModel::class.java]
 
         setFabClick()
         setUpRecycler()
@@ -86,14 +86,12 @@ class ListActivity : AppCompatActivity() {
         PopupMenu(this, view).run {
             menuInflater.inflate(R.menu.sort_course, menu)
 
-            setOnMenuItemClickListener {
-                viewModel.sort(
-                    when (it.itemId) {
-                        R.id.sort_time -> SortType.TIME
-                        R.id.sort_course_name -> SortType.COURSE_NAME
-                        else -> SortType.LECTURER
-                    }
-                )
+            setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.sort_time -> viewModel.sort(SortType.TIME)
+                    R.id.sort_course_name -> viewModel.sort(SortType.COURSE_NAME)
+                    R.id.sort_lecturer -> viewModel.sort(SortType.LECTURER)
+                }
                 true
             }
             show()
@@ -102,12 +100,13 @@ class ListActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_list, menu)
-        return super.onCreateOptionsMenu(menu)
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_sort -> {
+                showSortMenu()
                 true
             }
 
@@ -139,7 +138,7 @@ class ListActivity : AppCompatActivity() {
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             val course = (viewHolder as CourseViewHolder).getCourse()
-
+            viewModel.delete(course)
         }
     }
 }
