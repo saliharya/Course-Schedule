@@ -16,6 +16,7 @@ import com.dicoding.courseschedule.R
 import com.dicoding.courseschedule.data.Course
 import com.dicoding.courseschedule.paging.CourseAdapter
 import com.dicoding.courseschedule.paging.CourseViewHolder
+import com.dicoding.courseschedule.ui.detail.DetailActivity
 import com.dicoding.courseschedule.ui.setting.SettingsActivity
 import com.dicoding.courseschedule.util.SortType
 
@@ -49,7 +50,9 @@ class ListActivity : AppCompatActivity() {
     }
 
     private fun onCourseClick(course: Course) {
-        //TODO 8 : Intent and show detailed course
+        val intent = Intent(this, DetailActivity::class.java)
+        intent.putExtra("course_id", course.id)
+        startActivity(intent)
     }
 
     private fun initAction() {
@@ -101,11 +104,13 @@ class ListActivity : AppCompatActivity() {
             R.id.action_sort -> {
                 true
             }
+
             R.id.action_settings -> {
                 val intent = Intent(this, SettingsActivity::class.java)
                 startActivity(intent)
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -113,8 +118,7 @@ class ListActivity : AppCompatActivity() {
     inner class Callback : ItemTouchHelper.Callback() {
 
         override fun getMovementFlags(
-            recyclerView: RecyclerView,
-            viewHolder: RecyclerView.ViewHolder
+            recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder
         ): Int {
             return makeMovementFlags(0, ItemTouchHelper.RIGHT)
         }
