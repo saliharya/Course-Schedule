@@ -16,9 +16,11 @@ import com.dicoding.courseschedule.R
 import com.dicoding.courseschedule.data.Course
 import com.dicoding.courseschedule.paging.CourseAdapter
 import com.dicoding.courseschedule.paging.CourseViewHolder
+import com.dicoding.courseschedule.ui.add.AddCourseActivity
 import com.dicoding.courseschedule.ui.detail.DetailActivity
 import com.dicoding.courseschedule.ui.setting.SettingsActivity
 import com.dicoding.courseschedule.util.SortType
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class ListActivity : AppCompatActivity() {
 
@@ -72,6 +74,10 @@ class ListActivity : AppCompatActivity() {
 
     private fun setFabClick() {
         //TODO 9 : Create AddCourseActivity to set new course schedule
+        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
+            val intent = Intent(this, AddCourseActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     //TODO 14 : Fixing bug : sort menu not show and course not deleted when list is swiped
