@@ -7,7 +7,7 @@ import com.dicoding.courseschedule.data.Course
 import com.dicoding.courseschedule.data.DataRepository
 import com.dicoding.courseschedule.util.Event
 
-class AddCourseViewModel(private val repository: DataRepository) : ViewModel() {
+class AddCourseViewModel(private val repository: DataRepository?) : ViewModel() {
 
     private val _saved = MutableLiveData<Event<Boolean>>()
     val saved: LiveData<Event<Boolean>>
@@ -34,7 +34,7 @@ class AddCourseViewModel(private val repository: DataRepository) : ViewModel() {
             lecturer = lecturer,
             note = note
         )
-        repository.insert(course)
+        repository?.insert(course)
         _saved.value = Event(true)
     }
 }
