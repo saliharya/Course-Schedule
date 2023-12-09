@@ -17,7 +17,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         val themePreference = findPreference<ListPreference>(getString(R.string.pref_key_dark))
         themePreference?.setOnPreferenceChangeListener { _, newValue ->
-            val themeValue = (newValue as String).toInt()
+            val themeValue = when (val themeString = newValue as String) {
+                getString(R.string.pref_dark_on) -> 1
+                getString(R.string.pref_dark_off) -> 2
+                getString(R.string.pref_dark_auto) -> 0
+                else -> throw IllegalArgumentException("Unexpected value: $themeString")
+            }
             updateTheme(themeValue)
             true
         }
