@@ -59,7 +59,7 @@ class DailyReminder : BroadcastReceiver() {
 
     private fun getPendingIntent(context: Context, intent: Intent): PendingIntent {
         return PendingIntent.getBroadcast(
-            context, DAILY_REMINDER_REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT
+            context, DAILY_REMINDER_REQUEST_CODE, intent, PendingIntent.FLAG_IMMUTABLE
         )
     }
 
