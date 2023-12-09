@@ -80,15 +80,23 @@ class AddCourseActivity : AppCompatActivity(), TimePickerFragment.DialogTimeList
                 val lecturer = findViewById<EditText>(R.id.ed_lecturer).text.toString()
                 val note = findViewById<EditText>(R.id.ed_note).text.toString()
 
-                viewModel.insertCourse(courseName, day, startTime, endTime, lecturer, note)
-                viewModel.saved.observe(this) { event ->
-                    event.getContentIfNotHandled()?.let { isSaved ->
-                        if (isSaved) {
-                            Toast.makeText(this, "Course added successfully", Toast.LENGTH_SHORT)
-                                .show()
-                            finish()
-                        } else {
-                            Toast.makeText(this, "Failed to add course", Toast.LENGTH_SHORT).show()
+                if (courseName.isEmpty() || startTime.isEmpty() || endTime.isEmpty()) {
+                    Toast.makeText(
+                        this, getString(R.string.input_empty_message), Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    viewModel.insertCourse(courseName, day, startTime, endTime, lecturer, note)
+                    viewModel.saved.observe(this) { event ->
+                        event.getContentIfNotHandled()?.let { isSaved ->
+                            if (isSaved) {
+                                Toast.makeText(
+                                    this, "Course added successfully", Toast.LENGTH_SHORT
+                                ).show()
+                                finish()
+                            } else {
+                                Toast.makeText(this, "Failed to add course", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
                         }
                     }
                 }

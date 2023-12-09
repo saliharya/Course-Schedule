@@ -13,9 +13,8 @@ import androidx.sqlite.db.SupportSQLiteQuery
 //TODO 2 : Define data access object (DAO)
 @Dao
 interface CourseDao {
-
     @RawQuery(observedEntities = [Course::class])
-    fun getNearestSchedule(query: SupportSQLiteQuery): LiveData<Course?>
+    fun getNearestSchedule(query: SupportSQLiteQuery): LiveData<Course>
 
     @RawQuery(observedEntities = [Course::class])
     fun getAll(query: SupportSQLiteQuery): DataSource.Factory<Int, Course>

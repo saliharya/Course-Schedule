@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -71,6 +72,7 @@ class DetailActivity : AppCompatActivity() {
                     setNegativeButton(getString(R.string.no), null)
                     setPositiveButton(getString(R.string.yes)) { _, _ ->
                         viewModel.delete()
+                        showToast(getString(R.string.delete_success_message))
                         finish()
                     }
                     show()
@@ -78,5 +80,9 @@ class DetailActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

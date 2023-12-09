@@ -33,7 +33,7 @@ class HomeActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(
             this, HomeViewModelFactory(DataRepository.getInstance(this))
         )[HomeViewModel::class.java]
-        viewModel.fetchNearestSchedule()
+
         viewModel.nearestSchedule.observe(this) { course ->
             showNearestSchedule(course)
         }

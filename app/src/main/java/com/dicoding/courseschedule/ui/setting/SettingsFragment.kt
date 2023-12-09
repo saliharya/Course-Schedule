@@ -15,15 +15,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
         //TODO 10 : Update theme based on value in ListPreference
         //TODO 11 : Schedule and cancel notification in DailyReminder based on SwitchPreference
 
-        val themePreference = findPreference<ListPreference>("theme_key")
-        themePreference?.setOnPreferenceChangeListener { preference, newValue ->
+        val themePreference = findPreference<ListPreference>(getString(R.string.pref_key_dark))
+        themePreference?.setOnPreferenceChangeListener { _, newValue ->
             val themeValue = (newValue as String).toInt()
             updateTheme(themeValue)
             true
         }
 
-        val notificationSwitchPreference = findPreference<SwitchPreference>("notification_key")
-        notificationSwitchPreference?.setOnPreferenceChangeListener { preference, newValue ->
+        val notificationSwitchPreference =
+            findPreference<SwitchPreference>(getString(R.string.pref_key_notify))
+        notificationSwitchPreference?.setOnPreferenceChangeListener { _, newValue ->
             val isEnabled = newValue as Boolean
             val dailyReminder = DailyReminder()
 
